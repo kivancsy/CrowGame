@@ -11,10 +11,28 @@ public class Player : MonoBehaviour
     public PlayerIdleState idleState { get; private set; }
     public PlayerMoveState moveState { get; private set; }
 
+    public PlayerJumpState jumpState { get; private set; }
+    public PlayerFallState fallState { get; private set; }
+
     [Header("Movement")] public float moveSpeed = 8f;
     private bool facingRight = true;
+    public float jumpForce = 10f;
+    public int jumpCount = 0;
+    public int maxJumpCount = 1;
     public int facingDirection { get; private set; } = 1;
+    [Range(0, 1)] public float inAirMoveMultiplier = 0.7f;
     public Vector2 moveInput { get; private set; }
+
+    [Header("Collision Detection")] [SerializeField]
+    private float groundCheckDistance;
+
+    [SerializeField] private LayerMask whatIsGround;
+    [SerializeField] private float wallCheckDistance;
+    [SerializeField] private Transform primaryWallCheck;
+    [SerializeField] private Transform secondaryWallCheck;
+    public bool jump;
+    public bool groundDetected { get; private set; }
+    public bool wallDetected { get; private set; }
 
     private void Awake()
     {
@@ -25,6 +43,8 @@ public class Player : MonoBehaviour
 
         idleState = new PlayerIdleState(this, stateMachine, "idle");
         moveState = new PlayerMoveState(this, stateMachine, "move");
+        jumpState = new PlayerJumpState(this, stateMachine, "jumpFall");
+        fallState = new PlayerFallState(this, stateMachine, "jumpFall");
     }
 
     private void OnEnable()
@@ -47,6 +67,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        HandleCollisionDetection();
         stateMachine.UpdateActiveState();
     }
 
@@ -69,5 +90,15 @@ public class Player : MonoBehaviour
         transform.Rotate(0, 180, 0);
         facingRight = !facingRight;
         facingDirection = facingDirection * -1;
+    }
+
+    private void HandleCollisionDetection()
+    {
+        groundDetected = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, whatIsGround);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(transform.position, transform.position + new Vector3(0, -groundCheckDistance));
     }
 }

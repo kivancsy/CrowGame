@@ -1,10 +1,17 @@
 using UnityEngine;
 
-public class PlayerIdleState : EntityState
+public class PlayerIdleState : PlayerGroundedState
 {
     public PlayerIdleState(Player player, StateMachine stateMachine, string animBoolName) : base(player, stateMachine,
         animBoolName)
     {
+    }
+
+    public override void Enter()
+    {
+        base.Enter();
+
+        player.SetVelocity(0, rb.linearVelocity.y);
     }
 
     public override void Update()
