@@ -1104,6 +1104,8 @@ MonoBehaviour:
   wallJumpDirection: {x: 6, y: 10}
   inAirMoveMultiplier: 0.75
   wallSlideSlowMultiplier: 0.7
+  dashDuration: 0.25
+  dashSpeed: 20
   groundCheckDistance: 1.23
   whatIsGround:
     serializedVersion: 2
