@@ -11,8 +11,9 @@ public class Player : MonoBehaviour
     public PlayerIdleState idleState { get; private set; }
     public PlayerMoveState moveState { get; private set; }
 
-    [Header("Movement")] 
-    public float moveSpeed = 8f;
+    [Header("Movement")] public float moveSpeed = 8f;
+    private bool facingRight = true;
+    public int facingDirection { get; private set; } = 1;
     public Vector2 moveInput { get; private set; }
 
     private void Awake()
@@ -52,5 +53,21 @@ public class Player : MonoBehaviour
     public void SetVelocity(float xVelocity, float yVelocity)
     {
         rb.linearVelocity = new Vector2(xVelocity, yVelocity);
+        HandleFlip(xVelocity);
+    }
+
+    private void HandleFlip(float xVelocity)
+    {
+        if (xVelocity > 0 && !facingRight)
+            Flip();
+        else if (xVelocity < 0 && facingRight)
+            Flip();
+    }
+
+    public void Flip()
+    {
+        transform.Rotate(0, 180, 0);
+        facingRight = !facingRight;
+        facingDirection = facingDirection * -1;
     }
 }

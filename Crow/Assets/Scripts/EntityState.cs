@@ -17,6 +17,7 @@ public abstract class EntityState
         this.animBoolName = animBoolName;
 
         anim = player.anim;
+        rb = player.rb;
         input = player.input;
     }
 
