@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class PlayerWallJumpState : EntityState
+public class PlayerJumpAttackState : EntityState
 {
-    public PlayerWallJumpState(Player player, StateMachine stateMachine, string animBoolName) : base(player,
+    public PlayerJumpAttackState(Player player, StateMachine stateMachine, string animBoolName) : base(player,
         stateMachine, animBoolName)
     {
     }
@@ -15,19 +15,19 @@ public class PlayerWallJumpState : EntityState
 
     public override void Update()
     {
-        base.Update();
-
         if (rb.linearVelocity.y < 0)
         {
             stateMachine.ChangeState(player.fallState);
+        }
+
+        if (rb.linearVelocity.y > 0 && input.Player.Attack.WasPressedThisFrame())
+        {
+            stateMachine.ChangeState(player.jumpAttackState);
         }
 
         if (player.wallDetected)
         {
             stateMachine.ChangeState(player.wallSlideState);
         }
-
-        if (input.Player.Attack.WasPerformedThisFrame() && rb.linearVelocity.y > 0)
-            stateMachine.ChangeState(player.basicAttackState);
     }
 }
