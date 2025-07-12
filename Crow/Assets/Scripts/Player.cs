@@ -17,7 +17,6 @@ public class Player : MonoBehaviour
     public PlayerWallJumpState wallJumpState { get; private set; }
     public PlayerDashState dashState { get; private set; }
     public PlayerBasicAttackState basicAttackState { get; private set; }
-    public PlayerJumpAttackState jumpAttackState { get; private set; }
 
     [Header("Attack Details")] public Vector2 attackVelocity;
     public Vector2 jumpAttackVelocity;
@@ -62,7 +61,6 @@ public class Player : MonoBehaviour
         wallJumpState = new PlayerWallJumpState(this, stateMachine, "jumpFall");
         dashState = new PlayerDashState(this, stateMachine, "dash");
         basicAttackState = new PlayerBasicAttackState(this, stateMachine, "basicAttack");
-        jumpAttackState = new PlayerJumpAttackState(this, stateMachine, "jumpAttack");
     }
 
     private void OnEnable()
